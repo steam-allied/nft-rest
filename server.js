@@ -5,7 +5,7 @@ import express from 'express';
 dotenv.config()
 
 const app = express();
-const port = process.env.PORT || 3000;
+const apiPort = process.env.API_PORT || 3000;
 
 /**
  * Adding headers to our requests.
@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api", apiRouter);
-app.listen(port);
+app.listen(apiPort);
 
 app.use((req, res, next) => {
     const error = Error("Not found");
@@ -32,4 +32,4 @@ app.use((req, res, next) => {
     res.send({ error: error.message });
 });
 
-console.log('SwapUp RESTful API server started on: ' + port);
+console.log('SwapUp RESTful API server started on: ' + apiPort);
