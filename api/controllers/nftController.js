@@ -1,7 +1,7 @@
 import { getAlchemy } from "../../utils/alchemy.js";
 
 function test(req, res) {
-    res.send({id:1, name:'irfan'});
+    res.send({network: process.env.NETWORK});
 }
 
 /// returns all the nfts owned by a wallet address
