@@ -1,6 +1,8 @@
 import { getAlchemy } from "../../utils/alchemy.js";
+//import { testDb } from "../models/test.js";
 
 function test(req, res) {
+    //testDb();
     res.send({network: process.env.NETWORK});
 }
 

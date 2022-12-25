@@ -1,11 +1,50 @@
-import { getAlchemy } from "../../utils/alchemy.js";
+import db from "../../database/models";
 
 async function list_all_wallets(req, res) {
-    var alchemy = getAlchemy();
-    // Print all NFTs returned in the response:
-    //var nfts = await alchemy.nft.getNftsForOwner("0x9fc7D5B258823e180595FF9E4BD07A78FA7E6f9a");
-    //return nfts.ownedNfts;
-    return null;
+    try{
+        let getdata = await db.users.findAll(req.body);
+        if(getdata){
+             res.json({
+                 success: true,
+                 message:"list_all_wallets",
+                 data:getdata
+             });
+         }
+     }catch(err){
+         console.log(err);
+         res.status(500).json({
+              success: false,
+              message:"***list_all_wallets error"
+         })
+     }
 }
 
-export const walletController = { list_all_wallets };
+async function create_wallet(req, res) {
+    let walletAddress = req.body.walletAddress;
+    try {
+        let checkdata = await db.users.findOne({where:{wallet:walletAddress}});
+        if(checkdata){
+                res.json({
+                    message:`create_wallet: ${walletAddress} already exists`,
+                    data:checkdata
+                });
+        } else {
+            let createdata = await db.users.create({wallet: walletAddress});
+            if(createdata) {
+                    res.json({
+                        success: true,
+                        message:`create_wallet: ${walletAddress}`, 
+                        data:createdata
+                    });
+            }
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message:`create_wallet: ${walletAddress}`
+        })
+    }
+}
+
+export const walletController = { list_all_wallets, create_wallet };

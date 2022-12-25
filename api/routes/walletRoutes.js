@@ -3,6 +3,6 @@ import { walletController } from '../controllers/walletController.js';
 
 export const walletRouter = express.Router();
 
-// walletRouter.route('/wallets')
-//     .get(walletController.list_all_wallet_nfts);
-    //.post(walletController.create_a_wallet);  
+walletRouter
+    .get('/', walletController.list_all_wallets)
+    .post('/', walletController.create_wallet);  

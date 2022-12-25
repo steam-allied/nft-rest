@@ -1,11 +1,16 @@
-import * as dotenv from 'dotenv'
-import apiRouter from './api/routes/index.js';
+import "dotenv/config"; //preload all the environment values
+
 import express from 'express';
-
-dotenv.config()
-
+import bodyParser from 'body-parser';
+import apiRouter from './api/routes/index.js';
 const app = express();
 const port = process.env.PORT || 3000;
+
+//parse application/json and look for raw text                                        
+app.use(bodyParser.json());                                     
+app.use(bodyParser.urlencoded({extended: true}));               
+app.use(bodyParser.text());                                    
+app.use(bodyParser.json({ type: 'application/json'}));
 
 /**
  * Adding headers to our requests.
