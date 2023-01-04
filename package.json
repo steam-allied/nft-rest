@@ -4,9 +4,12 @@
   "description": "backend api endpoints for swapup.trade",
   "main": "server.js",
   "scripts": {
-    "dev": "set NODE_ENV=development&& nodemon --exec babel-node server.js",
-    "test": "set NODE_ENV=test&& nodemon --exec babel-node server.js",
-    "prod": "set NODE_ENV=production&& nodemon --exec babel-node server.js"
+    "start": "babel-node ./src/server.js",
+    "build": "npm ci&& babel ./src --out-dir ./dist --source-maps",
+    "start:prod": "npm run build && node ./dist/server.js",
+    "dev": "set NODE_ENV=development&& nodemon --exec babel-node ./src/server.js",
+    "test": "set NODE_ENV=test&& nodemon --exec babel-node ./src/server.js",
+    "prod": "set NODE_ENV=production&& nodemon --exec babel-node ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,7 @@
   "dependencies": {
     "@babel/core": "^7.20.7",
     "@babel/node": "^7.20.7",
+    "@babel/cli": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "@babel/register": "^7.18.9",
     "alchemy-sdk": "^2.2.4",
