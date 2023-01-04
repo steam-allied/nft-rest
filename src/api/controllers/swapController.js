@@ -27,16 +27,16 @@ const newSwap = async (req, res) => {
     }
 }
 
-const updateSwap = async (req, res) => {
+const updateSwapStatus = async (req, res) => {
     try {
         const response = await db.swaps.update(
             { status: req.body.status },
-            { where: { metadata: req.body.meta } }
+            { where: { id: req.body.id } }
         )
         if (response) {
             res.json({
                 success: true,
-                message: "update_swap",
+                message: "update_swap_status",
                 data: response
             })
         }
@@ -44,7 +44,7 @@ const updateSwap = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: `***update_swap error`
+            message: `***update_swap_status error`
         })
     }
 }
@@ -56,8 +56,8 @@ const getPending = async (req, res) => {
                 [Op.and]: {
                     status: 1,
                     [Op.or]: [
-                        { accept_address: req.body.address },
-                        { init_address: req.body.address }
+                        { accept_address: req.query.address },
+                        { init_address: req.query.address }
                     ]
                 }
             }
@@ -84,8 +84,8 @@ const history = async (req, res) => {
             //attributes: ["createdAt", "status"],
             where: {
                 [Op.or]: [
-                    { accept_address: req.body.address },
-                    { init_address: req.body.address }
+                    { accept_address: req.query.address },
+                    { init_address: req.query.address }
                 ]
             }
         })
@@ -128,7 +128,7 @@ const sendSign = async (req, res) => {
 }
 
 export const swapController = {
-    updateSwap,
+    updateSwapStatus,
     newSwap,
     getPending,
     history,
