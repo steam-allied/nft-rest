@@ -8,10 +8,19 @@ function test(req, res) {
 
 /// returns all the nfts owned by a wallet address
 async function list_all_wallet_nfts(req, res) {
-    var alchemy = getAlchemy();
-    // Print all NFTs returned in the response:
-    var nfts = await alchemy.nft.getNftsForOwner(req.params.walletId);
-    res.send(nfts.ownedNfts);
+    try {
+        var alchemy = getAlchemy();
+        // Print all NFTs returned in the response:
+        var nfts = await alchemy.nft.getNftsForOwner(req.params.walletId);
+        res.send(nfts.ownedNfts);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "***list_all_wallet_nfts error"
+        })
+    }
+    
 }
 
 ///register a new wallet account in the system

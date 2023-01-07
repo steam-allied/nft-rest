@@ -1,15 +1,20 @@
 import db from "../../database/models"
 import { Op } from "sequelize"
 
+function test(req, res) {
+    //testDb();
+    res.send({network: process.env.NETWORK});
+}
+
 const newSwap = async (req, res) => {
     try {
-        var meta = req.body.meta;
+        var metadata = req.body.metadata;
         
         const response = await db.swaps.create({
-            metadata: JSON.stringify(meta),
+            metadata: JSON.stringify(metadata),
             status: 1,
-            init_address: meta.init.address,
-            accept_address: meta.accept.address
+            init_address: req.body.init_address.trim(),
+            accept_address: req.body.accept_address.trim()
         })
         if (response) {
             res.json({
@@ -27,12 +32,43 @@ const newSwap = async (req, res) => {
     }
 }
 
+const updateSwap = async (req, res) => {
+    try {
+        var metadata = req.body.metadata;
+        
+        const response = await db.swaps.update(
+        { 
+            metadata: JSON.stringify(metadata),
+            status: 1,
+            init_address: req.body.init_address.trim(),
+            accept_address: req.body.accept_address.trim() 
+        },
+        { where: { id: req.body.id } });
+
+        if (response) {
+            res.json({
+                success: true,
+                message: "update_swap",
+                data: response
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            message: "***update_swap error"
+        })
+    }
+}
+
 const updateSwapStatus = async (req, res) => {
     try {
         const response = await db.swaps.update(
             { status: req.body.status },
             { where: { id: req.body.id } }
-        )
+        );
+
+
         if (response) {
             res.json({
                 success: true,
@@ -46,6 +82,41 @@ const updateSwapStatus = async (req, res) => {
             success: false,
             message: `***update_swap_status error`
         })
+    }
+}
+
+const getSwapDetails = async (req, res) => {
+    try {
+        console.log(req.query.swapId);
+        const swap = await db.swaps.findByPk(req.query.swapId);
+        if(swap) {
+            let walletId = req.query.walletId;
+            const metadata = JSON.parse(swap.metadata);
+            console.log(metadata);
+            if(swap.init_address !== walletId && swap.accept_address !== walletId) {
+                res.status(200).json({
+                    success: false,
+                    message: "not authorized to view this swap"
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: "getSwapDetails",
+                    data: swap
+                });
+            }            
+        } else {
+            res.status(200).json({
+                success: false,
+                message: "swap details not found"
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            message: `***getSwapDetails error`
+        });
     }
 }
 
@@ -128,9 +199,12 @@ const sendSign = async (req, res) => {
 }
 
 export const swapController = {
-    updateSwapStatus,
+    test,
     newSwap,
+    updateSwap,
+    updateSwapStatus,
     getPending,
     history,
-    sendSign
+    sendSign,
+    getSwapDetails
 }
