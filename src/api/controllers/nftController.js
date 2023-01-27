@@ -17,7 +17,7 @@ async function list_all_wallet_nfts(req, res) {
         console.log(err);
         res.status(500).json({
             success: false,
-            message: "***list_all_wallet_nfts error"
+            message: `***list_all_wallet_nfts error -> ${err}`
         })
     }
     

@@ -1,4 +1,5 @@
 [
   "20221224221956-create-user.js",
-  "20221229125342-create-swap.js"
+  "20221229125342-create-swap.js",
+  "20230126201029-bc_transaction_details.js"
 ]

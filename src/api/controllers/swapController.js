@@ -27,7 +27,7 @@ const newSwap = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: "***new_swap error"
+            message: `***new_swap error -> ${err}`
         })
     }
 }
@@ -39,7 +39,7 @@ const updateSwap = async (req, res) => {
         const response = await db.swaps.update(
         { 
             metadata: JSON.stringify(metadata),
-            status: 1,
+            status: 1, //1 is pending
             init_address: req.body.init_address.trim(),
             accept_address: req.body.accept_address.trim() 
         },
@@ -56,7 +56,7 @@ const updateSwap = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: "***update_swap error"
+            message: `***update_swap error -> ${err}`
         })
     }
 }
@@ -64,7 +64,11 @@ const updateSwap = async (req, res) => {
 const updateSwapStatus = async (req, res) => {
     try {
         const response = await db.swaps.update(
-            { status: req.body.status },
+            { 
+                status: req.body.status,
+                tx: '' + req.body.txn,
+                notes: '' + req.body.notes
+            },
             { where: { id: req.body.id } }
         );
 
@@ -80,7 +84,7 @@ const updateSwapStatus = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: `***update_swap_status error`
+            message: `***update_swap_status -> ${err}`
         })
     }
 }
@@ -115,7 +119,7 @@ const getSwapDetails = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: `***getSwapDetails error`
+            message: `***getSwapDetails error -> ${err}`
         });
     }
 }
@@ -144,7 +148,7 @@ const getPending = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: `***get_pending error`
+            message: `***get_pending error -> ${err}`
         })
     }
 }
@@ -171,7 +175,7 @@ const history = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: `***history error`
+            message: `***history error -> ${err}`
         })
     }
 }
@@ -193,7 +197,7 @@ const sendSign = async (req, res) => {
         console.log(err)
         res.status(500).json({
             success: false,
-            message: `***send_sign error`
+            message: `***send_sign error -> ${err}`
         })
     }
 }

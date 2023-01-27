@@ -20,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
           init_address: DataTypes.STRING,
           accept_sign: DataTypes.STRING,
           init_sign: DataTypes.STRING,
-          status: DataTypes.INTEGER
+          status: DataTypes.INTEGER,
+          tx: DataTypes.STRING,
+          notes: DataTypes.STRING
       },
       {
           sequelize,

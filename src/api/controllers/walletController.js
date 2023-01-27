@@ -14,7 +14,7 @@ async function list_all_wallets(req, res) {
          console.log(err);
          res.status(500).json({
               success: false,
-              message:"***list_all_wallets error"
+              message:`***list_all_wallets -> ${err}`
          })
      }
 }
@@ -42,7 +42,7 @@ async function create_wallet(req, res) {
         console.log(err);
         res.status(500).json({
             success: false,
-            message:`create_wallet: ${walletAddress}`
+            message:`create_wallet: ${walletAddress} -> ${err}`
         })
     }
 }
