@@ -1,8 +1,8 @@
 import { getAlchemy } from "./alchemy.js"
 
-export const filterTokens = async (tkns, balances) => {
+const getMeta = async (tkns, balances) => {
     const alchemy = getAlchemy()
-    balances.forEach(async (tkn) => {
+    for (const tkn of balances) {
         if (
             tkn.tokenBalance !==
             "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -16,5 +16,11 @@ export const filterTokens = async (tkns, balances) => {
                 address: tkn.contractAddress
             })
         }
-    })
+    }
+}
+
+export const filterTokens = async (balances) => {
+    const tkns = []
+    await getMeta(tkns, balances)
+    return tkns
 }
